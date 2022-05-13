@@ -11,36 +11,41 @@ import { createDummyStorage, createVscodeStorage } from './storage/vscode-storag
 
 export type SpotifyStore = Store<ISpotifyStatusState>;
 
-let store: SpotifyStore;
+// TODO: Define type
+let store: any;
+// let store: SpotifyStore;
 
 export function getStore(memento?: Memento) {
     if (!store) {
         const notToPersistList: (keyof ISpotifyStatusState)[] = ['selectedTrack', 'selectedList'];
 
-        const persistConfig: PersistConfig = {
+        const persistConfig = {
             key: 'root',
             storage: memento ? createVscodeStorage(memento) : createDummyStorage(),
-            transforms: [{
-                out: (val: any, key: string) => {
-                    if (~notToPersistList.indexOf(key as keyof ISpotifyStatusState)) {
-                        return null;
-                    }
-                    if (key === 'tracks') {
-                        return Map(val);
-                    }
-                    return val;
-                },
-                in: (val: any, key: string) => {
-                    if (~notToPersistList.indexOf(key as keyof ISpotifyStatusState)) {
-                        return null;
-                    }
-                    return val;
-                }
-            }]
+            // transforms: [{
+            //     out: (val: any, key: string) => {
+            //         if (~notToPersistList.indexOf(key as keyof ISpotifyStatusState)) {
+            //             return null;
+            //         }
+            //         if (key === 'tracks') {
+            //             return Map(val);
+            //         }
+            //         return val;
+            //     },
+            //     in: (val: any, key: string) => {
+            //         if (~notToPersistList.indexOf(key as keyof ISpotifyStatusState)) {
+            //             return null;
+            //         }
+            //         return val;
+            //     }
+            // }]
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-        store = configureStore(persistedReducer, DEFAULT_STATE);
+        store = configureStore({
+            reducer: persistedReducer
+        });
+        
         persistStore(store);
     }
     return store;

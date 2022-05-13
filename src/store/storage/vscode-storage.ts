@@ -2,7 +2,7 @@ import { Memento } from 'vscode';
 
 export function createVscodeStorage(memento: Memento) {
     return {
-        getItem: (key: string): Promise<string> =>
+        getItem: (key: string): Promise<string | undefined>  =>
             new Promise((resolve, _reject) => {
                 resolve(memento.get(key));
             }),
