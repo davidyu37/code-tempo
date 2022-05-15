@@ -1,40 +1,34 @@
-import { getState } from '../store/store';
-import { actionsCreator } from '../actions/actions';
+import { commands } from 'vscode';
 let lastActive: number;
 let averageKPM: number;
 
-export const calculateKpm = () => {{
-    const now = Date.now();
-		if(lastActive) {
+export const calculateKpm = (args: { text: string }) => {
+	{
+		const now = Date.now();
+		if (lastActive) {
 			const diff = now - lastActive;
 			const diffInSeconds = diff / 1000;
 
-			console.log(diffInSeconds);
 			// KPM: keys per minute
-			const KPM = 60 / diffInSeconds;
+			const kPM = 60 / diffInSeconds;
 
-			console.log({KPM});
+			console.log({ kPM });
 
-			
-			if(averageKPM) {
-				averageKPM = (averageKPM + KPM) / 2;
+
+			if (averageKPM) {
+				averageKPM = (averageKPM + kPM) / 2;
 			} else {
-				averageKPM = KPM;
+				averageKPM = kPM;
 			}
-            
-            console.log({averageKPM});
 
-            actionsCreator.updateStateAction({
-                KPM
-            });
-			
-
+			console.log({ averageKPM });
 
 		}
 
 		lastActive = now;
 
-        commands.executeCommand('default:type', {
-            text: args.text
-        });
-}};
+		commands.executeCommand('default:type', {
+			text: args.text
+		});
+	}
+};

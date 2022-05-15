@@ -44,9 +44,7 @@
 		"webpack-cli": "^4.9.2"
 	},
 	"dependencies": {
-		"@reduxjs/toolkit": "^1.8.1",
-		"immutable": "^4.0.0",
-		"redux": "^4.2.0",
-		"redux-persist": "^6.0.0"
+		"moment": "^2.29.3",
+		"request-light": "^0.5.8"
 	}
 }
